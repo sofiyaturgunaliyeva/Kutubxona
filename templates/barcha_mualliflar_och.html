@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <form method="get">
+     <input type="text" name="qidiruv">
+     <button>Qidirish</button>
+ </form>
+   <h1> Barcha mualliflar ro'yxati:</h1>
+  {% for muallif in mualliflar %}
+
+  <h2> {{muallif}}</h2>
+  <a href = "/vazifa2/{{muallif.id}}/"><button> O'chirish </button></a>
+  <br>
+  {% endfor %}
+
+</body>
+</html>

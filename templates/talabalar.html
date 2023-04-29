@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Talabalar</title>
+</head>
+<body>
+  <h1> Bizda bor talabalar ro'yxati :</h1>
+    <br>
+    <br>
+    <br>
+    <form method="get">
+        <input type="text" name="qidiruv">
+        <button>Qidirish</button>
+    </form>
+    <br>
+    <br>
+    <br>
+    {% for i in student %}
+    <br>
+    <h3> {{i.id}}.{{i.ism}} </h3>
+    <h4> Kitoblar soni : {{i.kitob_soni}}</h4>
+    <a href="/talaba_ochir/{{i.id}}"><button>O'chirish</button></a>
+    <br>
+    {% endfor %}
+
+</body>
+</html>

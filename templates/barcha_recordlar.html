@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <br>
+  <br>
+  <h1> Barcha recordlar:</h1>
+  <br>
+  <br>
+  {% for record in recordlar %}
+  <h2>{{record}}</h2>
+   <a href = "/vazifa3/{{record.id}}/"><button> O'chirish </button></a>
+  <br>
+  {% endfor %}
+</body>
+</html>

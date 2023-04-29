@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vazifa</title>
+</head>
+<body>
+  <form method="get">
+     <input type="text" name="qidiruv">
+     <button>Qidirish</button>
+  </form>
+  <br>
+  <br>
+  <h1> Barcha recordlar:</h1>
+  <br>
+  <br>
+
+  {% for record in recordlar %}
+
+  <h2> {{record}}</h2>
+  {% endfor %}
+</body>
+</html>
