@@ -31,5 +31,6 @@ urlpatterns = [
     path('vazifa1/',vazifa1),
     path('vazifa2/<int:son>/',vazifa2),
     path('vazifa3/<int:son>/',vazifa3),
+    path('vazifa4/',vazifa4),
 
 ]

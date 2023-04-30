@@ -229,3 +229,20 @@ def vazifa2(sorov,son):
 def vazifa3(sorov,son):
     Record.objects.get(id = son).delete()
     return redirect('/recordlar/')
+
+# 4-topshiriq Hamma mualliflarni chiqaruvchi sahifaga muallifni ismi bo’yicha
+# qidirish imkoniyatini qo’shing.
+
+def vazifa4(sorov):
+    soz = sorov.GET.get('qidiruv')
+    if soz == "" or soz is None:
+        content = {
+            "mualliflar": Muallif.objects.all()
+        }
+    else:
+        content = {
+            "mualliflar": Muallif.objects.filter(ism__contains=soz)
+        }
+
+    return render(sorov, 'barcha_mualliflar.html',content)
+
