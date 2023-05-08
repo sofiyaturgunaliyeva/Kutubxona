@@ -53,3 +53,6 @@ class Record(models.Model):
     olingan_sana = models.DateField(auto_now_add=True)
     qaytargan_sana = models.DateField(null=True, blank=True)
 
+    def __str__(self):
+        return self.talaba.ism
+

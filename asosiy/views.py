@@ -45,10 +45,30 @@ def bitta_record(sorov, son):
 # 1- tpshiriq Hamma mualliflarni chiqaruvchi html/view yozing.
 
 def hamma_muallif(sorov):
-    content = {
-        "mualliflar": Muallif.objects.all()
-    }
-    return render(sorov, 'barcha_mualliflar.html',content)
+    if sorov.method == 'POST':
+        Muallif.objects.create(
+            ism = sorov.POST['i'],
+            kitob_soni = sorov.POST.get('k_s'),
+            jins = sorov.POST.get('j'),
+            tirik = True,
+            tugilgan_yili = sorov.POST.get('t_y')
+
+        )
+        return redirect('/mualliflar/')
+
+
+    soz = sorov.GET.get('qidiruv')
+    if soz == "" or soz is None:
+        content = {
+            "mualliflar": Muallif.objects.all()
+        }
+    else:
+        content = {
+            "mualliflar": Muallif.objects.filter(ism__contains=soz)
+        }
+
+    return render(sorov, 'barcha_mualliflar.html', content)
+
 
 # 2-topshiriq  Tanlangan bitta muallifning hamma ma’lumotlarini chiqaruvchi html/view yozing.
 
@@ -77,10 +97,32 @@ def bitta_kitob(sorov,son):
 # 5-topshiriq Hamma recordlarni chiqaring.
 
 def hamma_record(sorov):
-    content = {
-        "recordlar": Record.objects.all()
-    }
-    return render(sorov, 'barcha_recordlar.html',content)
+    if sorov.method == 'POST':
+        Record.objects.create(
+           talaba = Talaba.objects.get(id = sorov.POST.get('t')),
+           kitob = Kitob.objects.get(id=sorov.POST.get('k')),
+           admin = Admin.objects.get(id=sorov.POST.get('ad'))
+        )
+        return redirect('recordlar')
+
+    soz = sorov.GET.get('qidiruv')
+    if soz == "" or soz is None:
+        content = {
+            "recordlar": Record.objects.all(),
+            "student": Talaba.objects.all(),
+            "kitoblar" : Kitob.objects.all(),
+            "adminlar": Admin.objects.all()
+        }
+    else:
+        content = {
+            # "recordlar": Record.objects.filter(talaba__ism__contains=soz)
+            "student": Talaba.objects.filter(ism__contains=soz),
+            "kitoblar": Kitob.objects.filter(nom__contains=soz),
+            "adminlar": Admin.objects.filter(ism__contains=soz)
+        }
+    return render(sorov, 'barcha_recordlar.html', content)
+
+
 
 # 6-topshiriq Tirik mualliflarni chiqaring.
 
@@ -166,6 +208,15 @@ def bitiruvchi(sorov):
 # topshiriq  Url orqali son yuborib, viewda id’si shu songa tegishli studentni o’chirib yuborish
 
 def talabalar(sorov):
+    if sorov.method == 'POST':
+        Talaba.objects.create(
+            ism = sorov.POST['i'],
+            kurs = sorov.POST.get('k'),
+            kitob_soni = sorov.POST.get('k_s')
+
+        )
+        return redirect('/talabalar/')
+
     soz = sorov.GET.get('qidiruv')
     if soz == "" or soz is None:
         content = {
@@ -184,22 +235,35 @@ def talaba_ochir(sorov,son):
 
 def kitob_ochir(sorov,son):
     Kitob.objects.get(id = son).delete()
-    return redirect('/kitoblar/')
+    return redirect('/hamma_kitoblar/')
 
 # topshiriq Kitoblarni nomi bo’yicha qidirish imkoniyatini qo’shing
 
-def hamma_kitob(sorov):
+def hamma_kitoblar(sorov):
+    if sorov.method == 'POST':
+        Kitob.objects.create(
+           nom = sorov.POST.get('nomi'),
+           sahifa = sorov.POST.get('s'),
+           janr = sorov.POST.get('j'),
+           muallif = Muallif.objects.get(id = sorov.POST.get('m'))
+        )
+        return redirect('hamma_kitoblar')
+
+
     soz = sorov.GET.get('qidiruv')
     if soz == "" or soz is None:
         content = {
-            "kitoblar": Kitob.objects.all()
+            "kitoblar": Kitob.objects.all(),
+            "mualliflar": Muallif.objects.all()
         }
     else:
         content = {
-            "kitoblar": Kitob.objects.filter(nom__contains=soz)
+            "kitoblar": Kitob.objects.filter(nom__contains=soz),
+            "mualliflar": Muallif.objects.filter(ism__contains=soz)
         }
 
-    return render(sorov, 'barcha_mualliflar.html',content)
+    return render(sorov, 'Kitoblar.html',content)
+
 
 # Vazifa
 
@@ -246,3 +310,22 @@ def vazifa4(sorov):
 
     return render(sorov, 'barcha_mualliflar.html',content)
 
+# Vazifa
+
+def adminlar(sorov):
+    if sorov.method == 'POST':
+        Admin.objects.create(
+           ism = sorov.POST.get('i'),
+           ish_vaqti = sorov.POST.get('i_v')
+        )
+        return redirect('adminlar')
+    soz = sorov.GET.get('qidiruv')
+    if soz == "" or soz is None:
+        content = {
+            "adminlar": Admin.objects.all()
+        }
+    else:
+        content = {
+            "adminlar": Admin.objects.filter(ism__contains=soz)
+        }
+    return render(sorov, 'Adminlar.html',content)

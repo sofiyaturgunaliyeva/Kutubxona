@@ -23,6 +23,14 @@
     <a href="/talaba_ochir/{{i.id}}"><button>O'chirish</button></a>
     <br>
     {% endfor %}
+    <br>
+    <br>
+    <form method = "post">{% csrf_token %}
+        <input type="text" name = "i" placeholder="Ism">
+        <input type="number" name = "k" placeholder="Kusr">
+        <input type="number" name = "k_s" placeholder="Kitob_soni">
+        <button type="submit"> Qo'shish </button>
+    </form>
 
 </body>
 </html>

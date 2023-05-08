@@ -17,5 +17,17 @@
   <a href = "/vazifa2/{{muallif.id}}/"><button> O'chirish </button></a>
   <br>
   {% endfor %}
+
+    <br>
+    <br>
+    <form method="post">{% csrf_token %}
+        <input type="text" name="i" placeholder="Ism">
+        <input type="number" name="k_s" placeholder="Kitob_soni">
+        <input type="text" name="j" placeholder="Jinsi">
+        <input type="number" name="t_y" placeholder="Tug'ilgan_yili">
+        <button type="submit">Qo'shish</button>
+    </form>
+    <br>
+    <br>
 </body>
 </html>

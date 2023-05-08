@@ -13,7 +13,6 @@ urlpatterns = [
     path('bitta_record/<int:son>/', bitta_record),
     path('mualliflar/', hamma_muallif),
     path('muallif/<int:son>/', bitta_muallif),
-    path('kitoblar/',hamma_kitob),
     path('kitob/<int:son>/',bitta_kitob),
     path('recordlar/',hamma_record),
     path('tirik/',tirik_mualliflar),
@@ -32,5 +31,7 @@ urlpatterns = [
     path('vazifa2/<int:son>/',vazifa2),
     path('vazifa3/<int:son>/',vazifa3),
     path('vazifa4/',vazifa4),
+    path('hamma_kitoblar/',hamma_kitoblar),
+    path('adminlar/',adminlar),
 
 ]
