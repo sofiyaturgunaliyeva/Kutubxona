@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <h1> Kitob o'zgartirish </h1>
+  <br>
+  <br>
+   <form method="post">{% csrf_token %}
+        <label>Nom:</label>
+        <input type="text" name="n" value = "{{kitob.nom}}">
+        <label> Sahifa:</label>
+        <input type="number" name="s" value ="{{kitob.sahifa}}">
+        <label> Janr :</label>
+        <input type="text" name="j" value ="{{kitob.janr}}">
+        <select name="m">
+            <option value = "{{kitob.muallif.id}}"> {{kitob.muallif.ism}}</option>
+            {% for i in mualliflar %}
+            <option value="{{i.id}}">{{i.ism}}</option>
+
+            {% endfor %}
+        </select>
+        <button type="submit">Saqlash</button>
+   </form>
+
+</body>
+</html>

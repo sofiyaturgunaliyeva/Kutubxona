@@ -13,7 +13,7 @@
   <br>
   <h1> Barcha kitoblar ro'yxati:</h1>
   {% for kitob in kitoblar %}
-  <h2> {{kitob.id}}.{{kitob.nom}}.{{kitob.janr}}</h2>
+  <h2> <a href="/kitob_ozgartir/{{kitob.id}}/">{{kitob.nom}}</a ></h2>  <h2>{{kitob.janr}}</h2>
     <h3> Muallif: {{kitob.muallif.ism}}</h3>
   <a href = "/kitob_ochir/{{kitob.id}}/"><button> O'chirish </button></a>
   <br>
@@ -22,14 +22,15 @@
     <br>
     <br>
     <form method="post">{% csrf_token %}
-        <input type="text" name="nomi" placeholder="Nom">
-        <input type="number" name="s" placeholder="Sahifa">
-        <input type="text" name="j" placeholder="Janr">
-        <select name="m">
-            {% for i in mualliflar %}
-            <option value="{{i.id}}">{{i.ism}}</option>
-            {% endfor %}
-        </select>
+        {{forma.as_p}}
+<!--        <input type="text" name="nomi" placeholder="Nom">-->
+<!--        <input type="number" name="s" placeholder="Sahifa">-->
+<!--        <input type="text" name="j" placeholder="Janr">-->
+<!--        <select name="m">-->
+<!--            {% for i in mualliflar %}-->
+<!--            <option value="{{i.id}}">{{i.ism}}</option>-->
+<!--            {% endfor %}-->
+<!--        </select>-->
         <button type="submit">Qo'shish</button>
     </form>
     <br>

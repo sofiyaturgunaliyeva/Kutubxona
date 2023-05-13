@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Record o'zgartirish</title>
+</head>
+<body>
+    <h1>Record o'zgartirish</h1>
+    <br>
+    <br>
+    <form method="post">
+        {% csrf_token %}
+        <label>Talaba:</label>
+        <select name="t">
+            {% for i in talabalar %}
+            <option value="{{i.id}}" >{{i.ism}}</option>
+            {% endfor %}
+        </select>
+        <label>Kitob:</label>
+        <select name="k">
+            {% for i in kitoblar %}
+            <option value="{{i.id}}">{{i.nom}}</option>
+            {% endfor %}
+        </select>
+        <label>Admin:</label>
+        <select name="ad">
+            {% for i in adminlar %}
+            <option value="{{i.id}}">{{i.ism}}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <br>
+    <label>Qaytargan sana:</label>
+    <input type="date" name="q" value="{{record.qaytargan_sana}}">
+    <br>
+    <br>
+        <button type="submit">Saqlash</button>
+    </form>
+</body>
+</html>

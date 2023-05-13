@@ -18,7 +18,8 @@
     <br>
     {% for i in student %}
     <br>
-    <h3> {{i.id}}.{{i.ism}} </h3>
+    <h2>{{i.id}}</h2>
+    <h3> <a href="/talaba_edit/{{i.id}}/">{{i.ism}}</a ></h3>
     <h4> Kitoblar soni : {{i.kitob_soni}}</h4>
     <a href="/talaba_ochir/{{i.id}}"><button>O'chirish</button></a>
     <br>
@@ -26,9 +27,10 @@
     <br>
     <br>
     <form method = "post">{% csrf_token %}
-        <input type="text" name = "i" placeholder="Ism">
-        <input type="number" name = "k" placeholder="Kusr">
-        <input type="number" name = "k_s" placeholder="Kitob_soni">
+        {{forma}}
+<!--        <input type="text" name = "i" placeholder="Ism">-->
+<!--        <input type="number" name = "k" placeholder="Kusr">-->
+<!--        <input type="number" name = "k_s" placeholder="Kitob_soni">-->
         <button type="submit"> Qo'shish </button>
     </form>
 

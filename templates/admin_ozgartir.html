@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+   <h1> Admin o'zgartirish </h1>
+  <br>
+  <br>
+   <form method="post">{% csrf_token %}
+        <label>Ism:</label>
+        <input type="text" name="i" value = "{{admin.ism}}">
+        <label> Ish_vaqti:</label>
+        <select name="i_v">
+            <option value="8:00 dan 12:00 gacha">8:00 dan 12:00 gacha</option>
+            <option value="12:00 dan 17:00 gacha">12:00 dan 17:00 gacha</option>
+        </select>
+        <button type="submit">Saqlash</button>
+   </form>
+
+</body>
+</html>

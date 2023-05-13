@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from.models import *
+from .forms import *
 
 def salomlash(sorov):
     return HttpResponse("<h1>Salom Dunyo!</h1>")
@@ -209,22 +210,27 @@ def bitiruvchi(sorov):
 
 def talabalar(sorov):
     if sorov.method == 'POST':
-        Talaba.objects.create(
-            ism = sorov.POST['i'],
-            kurs = sorov.POST.get('k'),
-            kitob_soni = sorov.POST.get('k_s')
+        f = TalabaForm(sorov.POST)
+        if f.is_valid():
+            Talaba.objects.create(
+                ism = f.cleaned_data['ism'],
+                kurs = f.cleaned_data.get('kursi'),
+                kitob_soni = f.cleaned_data.get('k_s')
 
-        )
-        return redirect('/talabalar/')
+            )
+        return redirect('/talaba/')
 
     soz = sorov.GET.get('qidiruv')
     if soz == "" or soz is None:
         content = {
-            "student": Talaba.objects.all()
+            "student": Talaba.objects.all(),
+            "forma": TalabaForm()
+
         }
     else:
         content = {
-            "student": Talaba.objects.filter(ism__contains = soz)
+            "student": Talaba.objects.filter(ism__contains = soz),
+            "talaba": TalabaForm()
         }
     return render(sorov , 'talabalar.html', content)
 
@@ -241,25 +247,30 @@ def kitob_ochir(sorov,son):
 
 def hamma_kitoblar(sorov):
     if sorov.method == 'POST':
-        Kitob.objects.create(
-           nom = sorov.POST.get('nomi'),
-           sahifa = sorov.POST.get('s'),
-           janr = sorov.POST.get('j'),
-           muallif = Muallif.objects.get(id = sorov.POST.get('m'))
-        )
-        return redirect('hamma_kitoblar')
+        forma = KitobForm(sorov.POST)
+        if forma.is_valid():
+            forma.save()
+        # Kitob.objects.create(
+        #    nom = sorov.POST.get('nomi'),
+        #    sahifa = sorov.POST.get('s'),
+        #    janr = sorov.POST.get('j'),
+        #    muallif = Muallif.objects.get(id = sorov.POST.get('m'))
+        # )
+        return redirect('/hamma_kitoblar/')
 
 
     soz = sorov.GET.get('qidiruv')
     if soz == "" or soz is None:
         content = {
             "kitoblar": Kitob.objects.all(),
-            "mualliflar": Muallif.objects.all()
+            "mualliflar": Muallif.objects.all(),
+            "forma":KitobForm()
         }
     else:
         content = {
             "kitoblar": Kitob.objects.filter(nom__contains=soz),
-            "mualliflar": Muallif.objects.filter(ism__contains=soz)
+            "mualliflar": Muallif.objects.filter(ism__contains=soz),
+            "forma" : KitobForm()
         }
 
     return render(sorov, 'Kitoblar.html',content)
@@ -329,3 +340,89 @@ def adminlar(sorov):
             "adminlar": Admin.objects.filter(ism__contains=soz)
         }
     return render(sorov, 'Adminlar.html',content)
+
+def talaba_ozgartir(sorov,son):
+    if sorov.method == 'POST':
+        Talaba.objects.filter(id = son).update(
+            ism = sorov.POST.get('i'),
+            kitob_soni = sorov.POST.get('k_s'),
+            kurs = sorov.POST.get('k')
+        )
+        return redirect('/talaba/')
+    content={
+        "talaba":Talaba.objects.get(id = son)
+    }
+    return render(sorov,'talaba_ozgartir.html',content)
+
+def kitob_ozgartir(sorov,son):
+    if sorov.method == 'POST':
+        Kitob.objects.filter(id = son).update(
+            nom= sorov.POST.get('n'),
+            sahifa = sorov.POST.get('s'),
+            janr = sorov.POST.get('j'),
+            muallif = Muallif.objects.get(id = sorov.POST.get('m'))
+        )
+        return redirect('/hamma_kitoblar/')
+    k = Kitob.objects.get(id = son)
+    content={
+        "kitob":k,
+        "mualliflar" : Muallif.objects.exclude(id = k.muallif.id)
+    }
+    return render(sorov,'kitob_ozgartir.html',content)
+
+# Vazifa
+# 1-topshiriq  Tanlangan admin ma’lumotini tahrir qilish imkoniyatini qo’shing.
+
+def admin_ozgartir(sorov,son):
+    if sorov.method == 'POST':
+        Admin.objects.filter(id = son).update(
+            ism= sorov.POST.get('i'),
+            ish_vaqti = sorov.POST.get('i_v')
+        )
+        return redirect('/adminlar/')
+    content={
+        "admin" : Admin.objects.get(id = son)
+    }
+    return render(sorov,'admin_ozgartir.html',content)
+
+# 2-topshiriq Tanlangan muallif ma’lumotini tahrir qilish imkoniyatini qo’shing.
+
+def muallif_ozgartir(sorov,son):
+    if sorov.method == 'POST':
+        Muallif.objects.filter(id = son).update(
+            ism= sorov.POST.get('i'),
+            kitob_soni = sorov.POST.get('k_s'),
+            jins = sorov.POST.get('j'),
+            tirik = True,
+            tugilgan_yili = sorov.POST.get('t_y')
+
+        )
+        return redirect('/mualliflar/')
+    content={
+        "muallif" : Muallif.objects.get(id = son)
+    }
+    return render(sorov,'muallif_ozgartir.html',content)
+
+
+# 3-topshiriq  Record ma’lumotlari uchun o’zgartirish imkoniyati qo’shing.
+# Faqat qaytardi va qaytarish sanasi ma’lumotlarini o’zgartirish imkoniyati bo’lsin xolos.
+
+def record_ozgartir(sorov, son):
+    if sorov.method == 'POST':
+        Record.objects.filter(id=son).update(
+            talaba=Talaba.objects.get(id=sorov.POST.get('t')),
+            kitob=Kitob.objects.get(id=sorov.POST.get('k')),
+            admin=Admin.objects.get(id=sorov.POST.get('ad')),
+            qaytargan_sana=sorov.POST.get('q')
+        )
+        return redirect('/recordlar/')
+
+    content = {
+        "record": Record.objects.get(id=son),
+        "talabalar": Talaba.objects.all(),
+        "kitoblar": Kitob.objects.all(),
+        "adminlar": Admin.objects.all()
+    }
+    return render(sorov, 'record_ozgartir.html', content)
+
+

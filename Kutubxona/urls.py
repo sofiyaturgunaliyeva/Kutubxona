@@ -33,5 +33,10 @@ urlpatterns = [
     path('vazifa4/',vazifa4),
     path('hamma_kitoblar/',hamma_kitoblar),
     path('adminlar/',adminlar),
+    path('talaba_edit/<int:son>/',talaba_ozgartir),
+    path('kitob_ozgartir/<int:son>/',kitob_ozgartir),
+    path('admin_ozgartir/<int:son>/',admin_ozgartir),
+    path('muallif_ozgartir/<int:son>/',muallif_ozgartir),
+    path('record_ozgartir/<int:son>/',record_ozgartir),
 
 ]

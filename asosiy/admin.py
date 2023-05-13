@@ -22,9 +22,44 @@ class KitobAdmin(admin.ModelAdmin):
     list_filter = ("janr",)
     autocomplete_fields = ("muallif",)
 
+# Vazifa 2  Muallifni ModelAdmin orqali qayta registratsiya qiling.
+# Ismi bo’yicha qidirish, tirik-tirik emasligi bo’yicha filterlash imkoniyatlari bo’lsin.
+# Id va ism ustunlarini linkka aylantiring.
+# Kitob soni va tirikligi haqidagi ma’lumotni editable qiling.
 @admin.register(Muallif)
 class MuallifAdmin(admin.ModelAdmin):
+    list_display = ("id","ism", "kitob_soni", "tirik")
     search_fields = ("ism",)
+    search_help_text = "Kitob nomi va muallif ismi bo'yicha"
+    list_filter = ("tirik",)
+    list_display_links = ("id","ism")
+    list_editable = ("kitob_soni","tirik")
+
+
+
+# 1-topshiriq.  Admin modelini ModelAdmin orqali qayta registratsiya qiling.
+# Adminni ish vaqti bo’yicha filterlash, ismi bo’yicha qidirish imkoniyatlari bo’lsin
+@admin.register(Admin)
+class AdminAdmin(admin.ModelAdmin):
+    list_display = ("id","ism")
+    search_fields = ("ism",)
+    search_help_text = "ismi bo'yicha"
+    list_filter = ("ish_vaqti",)
+
+
+
+# 3-topshiriq Recordni ModelAdmin orqali qayta registratsiya qiling.
+# Ma’lumot qo’shishda hamma FK’larni ham qidirish imkoniyati bo’lsin.
+
+@admin.register(Record)
+class RecordAdmin(admin.ModelAdmin):
+    list_display = ("id", "talaba","kitob","admin")
+    list_display_links = ("id",)
+    search_fields = ("talaba__ism","kitob__nom","admin__ism")
+    search_help_text = "talabaning ismi,kitobning nomi,adminning ismi bo'yicha"
+    autocomplete_fields = ("talaba","kitob","admin")
+
+
 
 
 
@@ -34,6 +69,6 @@ class MuallifAdmin(admin.ModelAdmin):
 
 # admin.site.register(Kitob)
 
-admin.site.register(Admin)
+# admin.site.register(Admin)
 
-admin.site.register(Record)
+# admin.site.register(Record)
