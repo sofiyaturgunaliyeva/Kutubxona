@@ -15,15 +15,16 @@
   <br>
   <br>
   {% for admin in adminlar %}
-  <h2>{{admin}}</h2>
+  <h2> <a href="/admin_ozgartir/{{admin.id}}/">{{admin.ism}}</a ></h2>
   <br>
   {% endfor %}
     <form method="post">{% csrf_token %}
-        <input type="text" name="i" placeholder="Ism">
-        <select name="i_v">
-            <option value="8:00 dan 12:00 gacha">8:00 dan 12:00 gacha</option>
-            <option value="12:00 dan 17:00 gacha">12:00 dan 17:00 gacha</option>
-        </select>
+        {{forma}}
+<!--        <input type="text" name="i" placeholder="Ism">-->
+<!--        <select name="i_v">-->
+<!--            <option value="8:00 dan 12:00 gacha">8:00 dan 12:00 gacha</option>-->
+<!--            <option value="12:00 dan 17:00 gacha">12:00 dan 17:00 gacha</option>-->
+<!--        </select>-->
         <button type="submit">Qo'shish</button>
     </form>
 </body>

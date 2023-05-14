@@ -47,12 +47,14 @@ def bitta_record(sorov, son):
 
 def hamma_muallif(sorov):
     if sorov.method == 'POST':
-        Muallif.objects.create(
-            ism = sorov.POST['i'],
-            kitob_soni = sorov.POST.get('k_s'),
-            jins = sorov.POST.get('j'),
-            tirik = True,
-            tugilgan_yili = sorov.POST.get('t_y')
+        f = MuallifForm(sorov.POST)
+        if f.is_valid():
+            Muallif.objects.create(
+                ism=f.cleaned_data['ism'],
+                kitob_soni=f.cleaned_data['k_s'],
+                jins=f.cleaned_data['jinsi'],
+                tirik=f.cleaned_data['tirik'],
+                tugilgan_yili=f.cleaned_data['tugilgan_yili'],
 
         )
         return redirect('/mualliflar/')
@@ -61,11 +63,13 @@ def hamma_muallif(sorov):
     soz = sorov.GET.get('qidiruv')
     if soz == "" or soz is None:
         content = {
-            "mualliflar": Muallif.objects.all()
+            "mualliflar": Muallif.objects.all(),
+            "forma": MuallifForm()
         }
     else:
         content = {
-            "mualliflar": Muallif.objects.filter(ism__contains=soz)
+            "mualliflar": Muallif.objects.filter(ism__contains=soz),
+            "forma": MuallifForm()
         }
 
     return render(sorov, 'barcha_mualliflar.html', content)
@@ -99,12 +103,15 @@ def bitta_kitob(sorov,son):
 
 def hamma_record(sorov):
     if sorov.method == 'POST':
-        Record.objects.create(
-           talaba = Talaba.objects.get(id = sorov.POST.get('t')),
-           kitob = Kitob.objects.get(id=sorov.POST.get('k')),
-           admin = Admin.objects.get(id=sorov.POST.get('ad'))
-        )
-        return redirect('recordlar')
+        forma = RecordForm(sorov.POST)
+        if forma.is_valid():
+            forma.save()
+        # Record.objects.create(
+        #    talaba = Talaba.objects.get(id = sorov.POST.get('t')),
+        #    kitob = Kitob.objects.get(id=sorov.POST.get('k')),
+        #    admin = Admin.objects.get(id=sorov.POST.get('ad'))
+
+        return redirect('/recordlar/')
 
     soz = sorov.GET.get('qidiruv')
     if soz == "" or soz is None:
@@ -112,14 +119,16 @@ def hamma_record(sorov):
             "recordlar": Record.objects.all(),
             "student": Talaba.objects.all(),
             "kitoblar" : Kitob.objects.all(),
-            "adminlar": Admin.objects.all()
+            "adminlar": Admin.objects.all(),
+            "forma": RecordForm()
         }
     else:
         content = {
             # "recordlar": Record.objects.filter(talaba__ism__contains=soz)
             "student": Talaba.objects.filter(ism__contains=soz),
             "kitoblar": Kitob.objects.filter(nom__contains=soz),
-            "adminlar": Admin.objects.filter(ism__contains=soz)
+            "adminlar": Admin.objects.filter(ism__contains=soz),
+            "forma": RecordForm()
         }
     return render(sorov, 'barcha_recordlar.html', content)
 
@@ -325,19 +334,23 @@ def vazifa4(sorov):
 
 def adminlar(sorov):
     if sorov.method == 'POST':
-        Admin.objects.create(
-           ism = sorov.POST.get('i'),
-           ish_vaqti = sorov.POST.get('i_v')
-        )
-        return redirect('adminlar')
+        f = AdminForm(sorov.POST)
+        if f.is_valid():
+            Admin.objects.create(
+               ism = f.cleaned_data['ismi'],
+               ish_vaqti = f.cleaned_data['ish_vaqti']
+            )
+        return redirect('/adminlar/')
     soz = sorov.GET.get('qidiruv')
     if soz == "" or soz is None:
         content = {
-            "adminlar": Admin.objects.all()
+            "adminlar": Admin.objects.all(),
+            "forma": AdminForm()
         }
     else:
         content = {
-            "adminlar": Admin.objects.filter(ism__contains=soz)
+            "adminlar": Admin.objects.filter(ism__contains=soz),
+            "forma": AdminForm()
         }
     return render(sorov, 'Adminlar.html',content)
 

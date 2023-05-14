@@ -15,7 +15,7 @@
   <br>
   <br>
   {% for record in recordlar %}
-  <h2>{{record.id}}.{{record.talaba.ism}}</h2>
+  <h3> <a href="/record_ozgartir/{{record.id}}/">{{record.talaba.ism}}</a ></h3>
   <h3> Kitobi: {{record.kitob.nom}}</h3>
    <h3> Admini: {{record.admin.ism}}</h3>
    <a href = "/vazifa3/{{record.id}}/"><button> O'chirish </button></a>
@@ -26,24 +26,25 @@
     <br>
     <br>
     <form method="post">{% csrf_token %}
-        <select name="t">
-            {% for i in student %}
-            <option value="{{i.id}}">{{i.ism}}</option>
+        {{forma}}
+<!--        <select name="t">-->
+<!--            {% for i in student %}-->
+<!--            <option value="{{i.id}}">{{i.ism}}</option>-->
 
-            {% endfor %}
-        </select>
-        <select name="k">
-            {% for i in kitoblar %}
-            <option value="{{i.id}}">{{i.nom}}</option>
+<!--            {% endfor %}-->
+<!--        </select>-->
+<!--        <select name="k">-->
+<!--            {% for i in kitoblar %}-->
+<!--            <option value="{{i.id}}">{{i.nom}}</option>-->
 
-            {% endfor %}
-        </select>
-        <select name="ad">
-            {% for i in adminlar %}
-            <option value="{{i.id}}">{{i.ism}}</option>
+<!--            {% endfor %}-->
+<!--        </select>-->
+<!--        <select name="ad">-->
+<!--            {% for i in adminlar %}-->
+<!--            <option value="{{i.id}}">{{i.ism}}</option>-->
 
-            {% endfor %}
-        </select>
+<!--            {% endfor %}-->
+<!--        </select>-->
 
 
 
