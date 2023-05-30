@@ -13,6 +13,9 @@
   <br>
   <h1> Barcha recordlar:</h1>
   <br>
+   <a href="/logout/" style="text-decoration: none; color: red;">
+        Log out
+    </a>
   <br>
   {% for record in recordlar %}
   <h3> <a href="/record_ozgartir/{{record.id}}/">{{record.talaba.ism}}</a ></h3>

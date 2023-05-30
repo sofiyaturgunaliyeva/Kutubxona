@@ -2,12 +2,32 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from.models import *
 from .forms import *
+from django.contrib.auth import authenticate, login, logout
 
 def salomlash(sorov):
     return HttpResponse("<h1>Salom Dunyo!</h1>")
 
 def bosh_sahifa(sorov):
     return render(sorov , 'home.html')
+
+
+def login_view(sorov):
+    if sorov.method == "POST":
+       user = authenticate(               # bor bo'lsa userni , yo'q bo'lsa None
+            username = sorov.POST.get('l'),
+            password = sorov .POST.get('p')
+        )
+       if user is None:
+            return redirect("/")
+       login(sorov,user)
+       return redirect("/bosh_s/")
+    return render(sorov, 'login.html')
+
+
+def logout_view(sorov):
+    logout(sorov)
+    return redirect("/")
+
 
 def mashq_uchun(sorov):
     content = {
@@ -102,36 +122,37 @@ def bitta_kitob(sorov,son):
 # 5-topshiriq Hamma recordlarni chiqaring.
 
 def hamma_record(sorov):
-    if sorov.method == 'POST':
-        forma = RecordForm(sorov.POST)
-        if forma.is_valid():
-            forma.save()
-        # Record.objects.create(
-        #    talaba = Talaba.objects.get(id = sorov.POST.get('t')),
-        #    kitob = Kitob.objects.get(id=sorov.POST.get('k')),
-        #    admin = Admin.objects.get(id=sorov.POST.get('ad'))
+    if sorov.user.is_authenticated:
+        if sorov.method == 'POST':
+            forma = RecordForm(sorov.POST)
+            if forma.is_valid():
+                forma.save()
+            # Record.objects.create(
+            #    talaba = Talaba.objects.get(id = sorov.POST.get('t')),
+            #    kitob = Kitob.objects.get(id=sorov.POST.get('k')),
+            #    admin = Admin.objects.get(id=sorov.POST.get('ad'))
 
-        return redirect('/recordlar/')
+            return redirect('/recordlar/')
 
-    soz = sorov.GET.get('qidiruv')
-    if soz == "" or soz is None:
-        content = {
-            "recordlar": Record.objects.all(),
-            "student": Talaba.objects.all(),
-            "kitoblar" : Kitob.objects.all(),
-            "adminlar": Admin.objects.all(),
-            "forma": RecordForm()
-        }
-    else:
-        content = {
-            # "recordlar": Record.objects.filter(talaba__ism__contains=soz)
-            "student": Talaba.objects.filter(ism__contains=soz),
-            "kitoblar": Kitob.objects.filter(nom__contains=soz),
-            "adminlar": Admin.objects.filter(ism__contains=soz),
-            "forma": RecordForm()
-        }
-    return render(sorov, 'barcha_recordlar.html', content)
-
+        soz = sorov.GET.get('qidiruv')
+        if soz == "" or soz is None:
+            content = {
+                "recordlar": Record.objects.all(),
+                "student": Talaba.objects.all(),
+                "kitoblar" : Kitob.objects.all(),
+                "adminlar": Admin.objects.all(),
+                "forma": RecordForm()
+            }
+        else:
+            content = {
+                # "recordlar": Record.objects.filter(talaba__ism__contains=soz)
+                "student": Talaba.objects.filter(ism__contains=soz),
+                "kitoblar": Kitob.objects.filter(nom__contains=soz),
+                "adminlar": Admin.objects.filter(ism__contains=soz),
+                "forma": RecordForm()
+            }
+        return render(sorov, 'barcha_recordlar.html', content)
+    return redirect('/')
 
 
 # 6-topshiriq Tirik mualliflarni chiqaring.
