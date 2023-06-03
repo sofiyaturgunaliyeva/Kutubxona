@@ -2,9 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 class Talaba(models.Model):
     ism = models.CharField(max_length=50)
-    kitob_soni = models.SmallIntegerField()
+    kitob_soni = models.SmallIntegerField(null=True)
     kurs = models.SmallIntegerField()
-
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.ism
@@ -53,9 +53,8 @@ class Record(models.Model):
     admin= models.ForeignKey(Admin, on_delete=models.CASCADE)
     olingan_sana = models.DateField(auto_now_add=True)
     qaytargan_sana = models.DateField(null=True, blank=True)
-
+    foydalanuvchi = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     def __str__(self):
         return self.talaba.ism
 
 
-foydalanuvchi = models.ForeignKey(User,on_delete=models.CASCADE, null = True)

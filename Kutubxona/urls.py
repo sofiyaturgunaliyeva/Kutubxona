@@ -38,7 +38,8 @@ urlpatterns = [
     path('admin_ozgartir/<int:son>/',admin_ozgartir),
     path('muallif_ozgartir/<int:son>/',muallif_ozgartir),
     path('record_ozgartir/<int:son>/',record_ozgartir),
-    path('',login_view),
+    path('',login_view, name = 'login'),
     path('logout/',logout_view),
+    path('register/',register),
 
 ]
