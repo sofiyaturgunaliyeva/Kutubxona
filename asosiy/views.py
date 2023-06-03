@@ -462,15 +462,9 @@ def record_ozgartir(sorov, son):
 
 def register(sorov):
     if sorov.method == 'POST' and sorov.POST.get('p') == sorov.POST.get('p2'):
-        u = User.objects.create_user(
+        User.objects.create_user(
             username = sorov.POST.get('l'),
             password = sorov.POST.get('p')
-        )
-        Talaba.objects.create(
-            ism = sorov.POST.get('i'),
-            kitob_soni = sorov.POST.get('k_s'),
-            kurs = sorov.POST.get('k'),
-            user = u
         )
         return redirect('login')
     return render(sorov,'register.html')
